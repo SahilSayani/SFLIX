@@ -8,10 +8,12 @@ class Account{
         //assign private con variable (referenced to current context using this keyword) to con variable defined in config.php
         $this->con=$con;
     }
-    public function register($fn,$ln,$un,$em2,$pw,$pw2){
+    public function register($fn,$ln,$un,$em,$em2,$pw,$pw2){
         $this->validateFirstName($fn);
         $this->validatelastName($ln);
         $this->validateUsername($un);
+        $this->validateEmails($em,$em2);
+
 
 
     }
@@ -39,6 +41,21 @@ class Account{
         $query->execute();
         if ($query->rowCount()!=0){
             array_push($this->errorArray,Constants::$usernameTaken);
+        }
+    }
+
+    private function validateEmails($em,$em2){
+        if($em!=$em2){
+            array_push($this->errorArray,Constants::$emailsDontMatch);
+            return;
+        }
+    //    if(){}        ".com" checker not created. (skip)
+    $query=$this->con->prepare("SELECT * FROM users WHERE email=:em");//preparing an SQL query and then we have to bind the em parameter
+        $query->bindValue(":em",$em);
+        //executing the query
+        $query->execute();
+        if ($query->rowCount()!=0){
+            array_push($this->errorArray,Constants::$emailTaken);
         }
     }
     

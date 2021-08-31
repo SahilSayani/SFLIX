@@ -55,6 +55,8 @@ require_once("includes/classes/Constants.php");
                 <?php  echo $account->getError(Constants::$usernameCharacters); ?>
                 <?php  echo $account->getError(Constants::$usernameTaken); ?>
                 <input type="text" name="username"placeholder="Username"required>
+                <?php  echo $account->getError(Constants::$emailsDontMatch); ?>
+                <?php  echo $account->getError(Constants::$emailTaken); ?>
                 <input type="email" name="email"placeholder="E-mail"required>
                 <input type="email" name="email2"placeholder="Confirm E-mail"required>
                 <input type="password" name="password"placeholder="Password"required>
