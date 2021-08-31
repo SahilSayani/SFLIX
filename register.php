@@ -67,4 +67,3 @@ require_once("includes/classes/Constants.php");
 </body>
 
 </html>
-<!-- trial commit -->
