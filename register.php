@@ -15,8 +15,15 @@ require_once("includes/classes/Constants.php");
         $email2=FormSanitizer::sanitizeFormEmail($_POST["email2"]);
         $password=FormSanitizer::sanitizeFormPassword($_POST["password"]);
         $password2=FormSanitizer::sanitizeFormPassword($_POST["password2"]);
+        
+        //success var will contain true or false based on whether or not the insert into users query ran successfully or not.
 
-       $account->register($firstName,$lastName,$username,$email,$email2,$password,$password2);
+       $success=$account->register($firstName,$lastName,$username,$email,$email2,$password,$password2);
+        //if success is true=>query worked =>redirect user to index.php 
+       if($success){
+           //Store session
+           header("Location: index.php");
+       }
     }
    
 
