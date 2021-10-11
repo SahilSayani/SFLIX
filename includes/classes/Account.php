@@ -21,6 +21,24 @@ class Account{
         return false;
     }
 
+    public function login($un,$pw){
+        $pw=hash("sha256",$pw);
+        //check if user input pwd ka hash matches database ka hash
+        $query=$this->con->prepare("SELECT * FROM users WHERE username=:un AND password=:pw");
+        
+        // :un,:pw these are placeholders and now we'll have to bind values to them
+        
+        $query->bindValue(":un",$un);
+        $query->bindValue(":pw",$pw);
+
+        $query->execute();
+        //if we find a single unique value in our DB on querying upon users login data we'll return true (NOTE:THE PWD IN THE DB IS STORED IN HASH FORM AS WELL SO WE'LL COMPARE HASHES AND NOT PLAIN-TEXT)
+        if ($query->rowCount()==1){
+            return true;
+        }
+        array_push($this->errorArray,Constants::$loginFailed);
+        return false;
+    }
     private function insertUserDetails($fn,$ln,$un,$em,$pw){
         // start by hashing the pwd
         $pw=hash("sha256",$pw);

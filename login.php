@@ -1,8 +1,24 @@
 <?php
-    if(isset($_POST["submitButton"])){
-        echo"Form was submitted";
-    }
+require_once("includes/config.php");
+require_once("includes/classes/FormSanitizer.php");
+require_once("includes/classes/Constants.php");
+require_once("includes/classes/Account.php");
 
+
+$account= new Account($con); //con variable coming from config.php
+if(isset($_POST["submitButton"])) {
+
+    $username=FormSanitizer::sanitizeFormUsername($_POST["username"]);
+        
+    $password=FormSanitizer::sanitizeFormPassword($_POST["password"]);
+    //success var will contain true or false based on whether or not the insert into users query ran successfully or not.
+    $success = $account->login($username,$password);
+    //if success is true=>query worked =>redirect user to index.php 
+    if($success) {
+        // Store session
+        header("Location: index.php");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,8 +42,10 @@
                 
             </div>
             <form method="POST">
-                
-                <input type="text" name="username "placeholder="Username"required>
+
+                <?php echo $account->getError(Constants::$loginFailed); ?>
+
+                <input type="text" name="username" placeholder="Username"required>
                 
                 <input type="password" name="password"placeholder="Password"required>
                
