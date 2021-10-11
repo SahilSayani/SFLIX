@@ -6,5 +6,8 @@ class Constants{
      public static $usernameTaken="Username already exists";
      public static $emailsDontMatch ="Emails Dont Match";
      public static $emailTaken="email already in use";
+     public static $passwordsDontMatch="Passwords Dont Match";
+     public static $passwordLength="Password must be between 5 and 25 characters";
+     
 }
 ?>

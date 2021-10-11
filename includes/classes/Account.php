@@ -13,7 +13,8 @@ class Account{
         $this->validatelastName($ln);
         $this->validateUsername($un);
         $this->validateEmails($em,$em2);
-
+        $this->validatePasswords($pw,$pw2);
+        
 
 
     }
@@ -49,7 +50,7 @@ class Account{
             array_push($this->errorArray,Constants::$emailsDontMatch);
             return;
         }
-    //    if(){}        ".com" checker not created. (skip)
+    //    if(!filter_var){}        ".com" checker not created. (skip)
     $query=$this->con->prepare("SELECT * FROM users WHERE email=:em");//preparing an SQL query and then we have to bind the em parameter
         $query->bindValue(":em",$em);
         //executing the query
@@ -59,6 +60,18 @@ class Account{
         }
     }
     
+    private function validatePasswords($pw,$pw2)
+    {
+        if($pw!=$pw2){
+            array_push($this->errorArray,Constants::$passwordsDontMatch);
+            return;
+        }
+        if(strlen($pw)<5 || strlen($pw)>25){
+            array_push($this->errorArray,Constants::$passwordLength);
+        }
+    }
+
+
     public function getError($error)
     {
         if(in_array($error,$this->errorArray)){
@@ -66,7 +79,7 @@ class Account{
         }
     }
 
-    }
+}
 
 
 ?>
