@@ -22,6 +22,7 @@ require_once("includes/classes/Constants.php");
         //if success is true=>query worked =>redirect user to index.php 
        if($success){
            //Store session
+           $_SESSION["userLoggedIn"]=$username;
            header("Location: index.php");
        }
     }
